@@ -3,7 +3,7 @@ body {
 }
 
 .bit_button {
-    background-color: #ffffff; /* Green */
+    background-color: #afafaf; /* Green */
     border: none;
     outline: none;
     color: rgb(32, 24, 20);
@@ -18,7 +18,7 @@ body {
 }
 
 .label_1 {
-    background-color: #ffffff; /* Green */
+    background-color: #afafaf; /* Green */
     border: none;
     outline: none;
     font-family: 'Courier New', Courier, monospace;
@@ -32,7 +32,7 @@ body {
     transition: 0.7s;
 }
 #result {
-    background-color: #ffffff; /* Green */
+    background-color: #afafaf; /* Green */
     border: none;
     outline: none;
     font-family: 'Courier New', Courier, monospace;
@@ -48,7 +48,7 @@ body {
 }
 
 .bit_button:hover { 
-    background-color: #afafaf;
+    background-color: #a0a0a0;
     opacity: 1;
 }
 
