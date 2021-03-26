@@ -26,7 +26,7 @@ body {
     padding: 5px 5px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+     display: inline-block; 
     font-size: 30px;
     opacity: 1;
     transition: 0.7s;
@@ -40,11 +40,11 @@ body {
     padding: 5px 5px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+    display: inline-block; 
     font-size: 30px;
     opacity: 1;
     transition: 0.7s;
-    width: 7%;
+    width: 7%; 
 }
 
 .bit_button:hover { 
@@ -54,7 +54,45 @@ body {
 
 .main_panel {
    display:flex;
+   flex-wrap: wrap;
    justify-content: center;
-   align-items: center;
-   min-height: 100vh; 
+   align-items: center; 
+   min-height: 100vh;
+   flex-direction: column; 
+}
+
+.row {
+    display: flex;
+    width: 700px;
+}
+.bit_section {
+    width: 90%; 
+}
+
+.break {
+    flex-basis: 100%;
+    height: 0;
+}
+
+.hex_numbers {
+  width: 90%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block; 
+}
+
+.hex_label {
+    padding-left: 10.8%;
+    padding-right: 10.8%;
+    background-color: #afafaf; /* Green */
+    border: none;
+    outline: none;
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(32, 24, 20);
+    text-align: center;
+    text-decoration: none;
+     display: inline-block; 
+    font-size: 30px;
+    opacity: 1;
+    transition: 0.7s;
 }
