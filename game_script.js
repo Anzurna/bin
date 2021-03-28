@@ -19,7 +19,10 @@ function FlipBit(button) {
     byte_str = byte_arr.join("");
     var dec_number = parseInt(byte_str, 2);
     GetId("result").innerHTML = dec_number.toString();
-    CalcHex(dec_number);
+    GetId("hl_0").innerHTML = dec_number.toString(16).toUpperCase();
+    GetId("ol_0").innerHTML = dec_number.toString(8);
+    // CalcHex(dec_number, "hl", 16, 4);
+    // CalcHex(dec_number, "ol", 8, 6);
 }
 var elements = document.getElementsByClassName("bit_button");
 for (var i = 0; i < elements.length; i++) {
@@ -27,15 +30,15 @@ for (var i = 0; i < elements.length; i++) {
         FlipBit(this); //Here you will need to use the param.
     });
 }
-function CalcHex(dec_number) {
-    var hex_string = dec_number.toString(16);
+function CalcHex(dec_number, id_base, dig_capasity, amount) {
+    var hex_string = dec_number.toString(dig_capasity);
     hex_string = hex_string.split("").reverse().join("");
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < amount; i++) {
         if (hex_string.length > i) {
-            GetId("hl_" + (i)).innerHTML = hex_string.charAt(i).toUpperCase();
+            GetId(id_base + "_" + (i)).innerHTML = hex_string.charAt(i).toUpperCase();
         }
         else {
-            GetId("hl_" + (i)).innerHTML = "0";
+            GetId(id_base + "_" + (i)).innerHTML = "0";
         }
     }
 }

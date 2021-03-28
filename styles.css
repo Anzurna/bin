@@ -44,7 +44,6 @@ body {
     font-size: 30px;
     opacity: 1;
     transition: 0.7s;
-    width: 7%; 
 }
 
 .bit_button:hover { 
@@ -76,14 +75,31 @@ body {
 
 .hex_numbers {
   width: 90%;
+  letter-spacing: 1.7rem;
   text-align: center;
   text-decoration: none;
   display: inline-block; 
 }
 
 .hex_label {
-    padding-left: 10.8%;
-    padding-right: 10.8%;
+    padding-left: 6%;
+    padding-right: 6%;
+    background-color: #afafaf; /* Green */
+    border: none;
+    outline: none;
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(32, 24, 20);
+    text-align: center;
+    text-decoration: none;
+     display: inline-block; 
+    font-size: 30px;
+    opacity: 1;
+    transition: 0.7s;
+}
+
+.oct_label {
+    padding-left: 6%;
+    padding-right: 6%;
     background-color: #afafaf; /* Green */
     border: none;
     outline: none;
