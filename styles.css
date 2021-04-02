@@ -8,8 +8,8 @@ body {
     outline: none;
     color: rgb(32, 24, 20);
     margin:0 auto;
-     padding-left: 0%; 
-     padding-right: 0%;
+    padding-left: 0%; 
+    padding-right: 0%;
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
     text-decoration: none;
@@ -18,6 +18,7 @@ body {
     font-size: 30px;
     opacity: 1;
     transition: 0.7s;
+    border-radius: 2px;
 }
 
 .label_1 {
@@ -58,6 +59,7 @@ body {
 .row {
     display: flex;
     width: 700px;
+    padding-top: 0.5%;
 }
 .bit_section {
     width: 100%;
@@ -71,7 +73,7 @@ body {
 
 .hex_numbers {
   width: 100%;
-  letter-spacing: 0.5rem;
+  letter-spacing: 0.25rem;
   text-align: left;
   text-decoration: none;
   display: inline-block;
@@ -111,4 +113,69 @@ body {
     display: inline-block;
     font-style: italic;
     letter-spacing: 0rem;
+    min-width: 20px;
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  
+}
+
+input {
+    letter-spacing: 0.25em;
+}
+
+.menu_button {
+    background-color: transparent;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
+    border: none;
+    outline: none; 
+    text-align: left;
+    border-radius: 5px;
+    /* outline: solid 5px #FC5185;
+    transition: outline 0.6s linear; */
+    transition: 0.7s;
+}
+
+.menu_button:hover {
+    background-color: #979696;
+    opacity: 1;
+}
+
+.task_string {
+
+    background-color: #afafaf; /* Green */
+    border: none;
+    outline: none;
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(32, 24, 20);
+    text-decoration: none;
+    display: inline-block; 
+    font-size: 20px;
+    opacity: 1;
+    transition: 0.7s;
+}
+
+.input_element {
+    background-color: #afafaf; /* Green */
+    border: none;
+    outline: none;
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(32, 24, 20);
+    text-decoration: none;
+    display: inline-block; 
+    font-size: 30px;
+    opacity: 1;
+    transition: 0.7s;
+    letter-spacing: 0;
+    border-bottom: solid 1px #636363;
 }
