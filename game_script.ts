@@ -40,45 +40,92 @@ var calc_panel = document.getElementById("calc_panel");
 var button = GetId("exercises_button");
 
  button.onclick = function() { 
-     calc_panel.remove();
-    createTextRow(`Вычислите физический адрес следующей исполняемой команды.
-    Вычислите адрес вершины стека.`);
-   
-     createBitRow("CS");
-     createBitRow("DS");
-     createBitRow("SS");
-     createBitRow("SP");
-     createBitRow("IP");
-
-
-
-    var row = document.createElement("div");
-    CreateRow(row);
-    var input_element = document.createElement("input");
-    row.append(input_element);
-    input_element.className = "input_element";
-    input_element.type = "number";
-    input_element.id = "first_answ";
-    input_element.placeholder = "0000000000000000";
-
-    var row = document.createElement("div");
-    CreateRow(row);
-    var input_element = document.createElement("input");
-    row.append(input_element);
-    input_element.className = "input_element";
-    input_element.type = "number";
-    input_element.id = "second_answ";
-    input_element.placeholder = "0000000000000000";
-
-
+    fade(calc_panel);
+    calc_panel.remove();
     button.remove();
-    //  let row = document.createElement("div");
-    //  CreateRow(row); 
-    //  let bit_row  = document.createElement("div");
-    //  createBitRowDiv(bit_row);
-    //  row.append(bit_row);
-    //  createBits(bit_row, "cs");
-     }
+    startSession();
+
+    }
+
+var task_1_fiz_address : string;
+var task_1_stack_address : string;
+
+function loadNextTask() {   
+    var task_panel = document.createElement("div");
+    task_panel.id = "task_panel";
+
+    GetId("main").append(task_panel);
+    fadeIn(task_panel);
+
+    loadTask1();
+}
+
+function startSession() {
+
+    //let random_number = Math.floor(Math.random() * 2);
+    loadNextTask();
+}
+
+function finishTask() {
+    //fade(GetId("task_panel"));
+    GetId("task_panel").remove()
+    loadNextTask();
+}
+
+function loadTask1(){
+    // createTextRow(`Вычислите физический адрес следующей исполняемой команды.
+    // Вычислите адрес вершины стека.`);
+
+    let cs = Math.floor(Math.random() * 65535);
+    let ss = Math.floor(Math.random() * 65535);
+    let ip = Math.floor(Math.random() * 65535);
+    let sp = Math.floor(Math.random() * 65535);
+
+    task_1_fiz_address = (cs * 16 + ip).toString(16).toUpperCase();
+    task_1_stack_address = (ss * 16 + sp).toString(16).toUpperCase();
+
+    createBitRow("CS", cs);
+    createBitRow("SS", ss);
+    createBitRow("SP", sp);
+    createBitRow("IP", ip);
+
+    createTextRow(`Вычислите физический адрес следующей исполняемой команды.`);
+    var row = document.createElement("div");
+    CreateRow(row);
+    var input_element = document.createElement("input");
+    row.append(input_element);
+    input_element.className = "input_element";
+    input_element.type = "text";
+    input_element.id = "first_answ";
+    input_element.placeholder = "FFFFF";
+
+    input_element.addEventListener('input', checkResult);
+
+    createTextRow(`Вычислите адрес вершины стека.`);
+
+    var row = document.createElement("div");
+    CreateRow(row);
+    var input_element = document.createElement("input");
+    row.append(input_element);
+    input_element.className = "input_element";
+    input_element.type = "text";
+    input_element.id = "second_answ";
+    input_element.placeholder = "FFFFF";
+    input_element.addEventListener('input', checkResult);
+    // input_element.pattern = "[0-1]*"
+}
+
+function checkResult(e){
+    console.log("Results:", task_1_fiz_address, task_1_stack_address);
+    var first_answer : string = (<HTMLInputElement>GetId("first_answ")).value.toUpperCase();
+    var second_answer:  string = (<HTMLInputElement>GetId("second_answ")).value.toUpperCase();
+
+    console.log("Current:", first_answer, second_answer);
+   if ((first_answer == task_1_fiz_address) && (second_answer == task_1_stack_address)) {
+       finishTask();
+   }
+
+}
 
 function createTextRow(text : string) {
     let row = document.createElement("div");
@@ -106,10 +153,8 @@ function CalcHex(dec_number : number, id_base : string, dig_capasity : number, a
 //     CreateBitRow(); 
 // }
 
-function createBitRow(suffix: string) {
+function createBitRow(suffix: string, random_number : number) {
   
-    let random_number = Math.floor(Math.random() * 65535);
-
      let row = document.createElement("div");
      CreateRow(row); 
 
@@ -122,7 +167,7 @@ function createBitRow(suffix: string) {
 
 function CreateRow(row) {
     row.className = "row";
-    GetId("main").append(row);
+    GetId("task_panel").append(row);
 }
 
 function createBitRowDiv(bit_row) {
@@ -143,7 +188,7 @@ function createBits(bit_row, suffix : string, random_number : number) {
 
     for (let bit_number = 15; bit_number >= 0; bit_number--) {      
         let bit = document.createElement("button");
-        bit.className = "bit_button";
+        bit.className = "bit_button_2";
         bit.type = "button";
         bit.dataset.value = bit_number + suffix;
         if (reversed_string[bit_number] == undefined) {
@@ -155,9 +200,37 @@ function createBits(bit_row, suffix : string, random_number : number) {
         bit_row.append(bit);
         if ((bit_number) % 4 == 0 && bit_number != 0) {
             let dot = document.createElement("p");
-            dot.className = "label_1";
+            dot.className = "bit_button_2";
             dot.innerHTML = ".";
             bit_row.append(dot);
         }
     }
+}
+
+function fade(element) {
+    var op = 1;  // initial opacity
+    var timer = setInterval(function () {
+        if (op <= 0.1){
+            clearInterval(timer);
+            element.style.display = 'none';
+        }
+        console.log("test");
+        element.style.opacity = op;
+        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+        op -= op * 0.1;
+    }, 3000);
+    return true
+}
+
+function fadeIn(element) {
+    var op = 0.01;  // initial opacity
+    element.style.display = 'block';
+    var timer = setInterval(function () {
+        if (op >= 1){
+            clearInterval(timer);
+        }
+        element.style.opacity = op;
+        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+        op += op * 0.1;
+    }, 20);
 }
