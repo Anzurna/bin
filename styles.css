@@ -171,6 +171,8 @@ input {
     outline: none;
     font-family: 'Courier New', Courier, monospace;
     color: rgb(32, 24, 20);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     text-decoration: none;
     display: inline-block; 
     font-size: 25px;
@@ -182,9 +184,41 @@ input {
     max-width: 20%;
 }
 
-.input_element:hover {
+.input_element_correct {
     background-color:rgba(161, 212, 140, 1);
-    border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border: none;
+    outline: none;
+    font-family: 'Courier New', Courier, monospace;
+    text-decoration: none;
+    display: inline-block; 
+    font-size: 25px;
+    opacity: 1;
+    transition: 0.7s;
+    letter-spacing: 0;
+    border-bottom: solid 1px #636363; 
+    min-width: 20%;
+    max-width: 20%;
+}
+
+.input_element_incorrect {
+    background-color: rgba(235, 18, 18, 0.397);
+    /* border-radius: 5px; */
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border: none;
+    outline: none;
+    font-family: 'Courier New', Courier, monospace;
+    text-decoration: none;
+    display: inline-block; 
+    font-size: 25px;
+    opacity: 1;
+    transition: 0.7s;
+    letter-spacing: 0;
+    border-bottom: solid 1px #636363; 
+    min-width: 20%;
+    max-width: 20%;
 }
 
 .bit_button_2 {

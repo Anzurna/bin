@@ -96,7 +96,21 @@ function checkResult(e) {
     var first_answer = GetId("first_answ").value.toUpperCase();
     var second_answer = GetId("second_answ").value.toUpperCase();
     console.log("Current:", first_answer, second_answer);
+    e.target.value = e.target.value.toUpperCase();
+    if (first_answer == task_1_fiz_address) {
+        GetId("first_answ").className = "input_element_correct";
+    }
+    else {
+        GetId("first_answ").className = "input_element_incorrect";
+    }
+    if (second_answer == task_1_stack_address) {
+        GetId("second_answ").className = "input_element_correct";
+    }
+    else {
+        GetId("second_answ").className = "input_element_incorrect";
+    }
     if ((first_answer == task_1_fiz_address) && (second_answer == task_1_stack_address)) {
+        setInterval(function () { }, 3000);
         finishTask();
     }
 }
@@ -167,25 +181,6 @@ function createBits(bit_row, suffix, random_number) {
             bit_row.append(dot);
         }
     }
-}
-// function fadeOut() {
-//     task_panel = GetId("task_panel")
-//     let start = Date.now(); // запомнить время начала
-//     let timer = setInterval(function() {
-//     // сколько времени прошло с начала анимации?
-//     let timePassed = Date.now() - start;
-//     if (timePassed >= 2000) {
-//         clearInterval(timer); // закончить анимацию через 2 секунды
-//         return;
-//     }
-//     // отрисовать анимацию на момент timePassed, прошедший с начала анимации
-//     draw(timePassed);
-//     }, 20);
-//     // в то время как timePassed идёт от 0 до 2000
-//     // left изменяет значение от 0px до 400px
-// }
-function draw(timePassed, object) {
-    object.style.opacity = timePassed / 5;
 }
 function fade(element) {
     var op = 1; // initial opacity

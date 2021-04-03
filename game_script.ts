@@ -121,9 +121,27 @@ function checkResult(e){
     var second_answer:  string = (<HTMLInputElement>GetId("second_answ")).value.toUpperCase();
 
     console.log("Current:", first_answer, second_answer);
+
+    e.target.value = e.target.value.toUpperCase();
+    if (first_answer == task_1_fiz_address) {
+        GetId("first_answ").className = "input_element_correct";
+    } else {
+        GetId("first_answ").className = "input_element_incorrect";
+    }
+
+     if (second_answer == task_1_stack_address) {
+        GetId("second_answ").className = "input_element_correct";
+    } else {
+        GetId("second_answ").className = "input_element_incorrect";
+    }
+
+
    if ((first_answer == task_1_fiz_address) && (second_answer == task_1_stack_address)) {
        finishTask();
    }
+
+
+
 
 }
 
