@@ -60,6 +60,11 @@ body {
     display: flex;
     width: 700px;
     padding-top: 0.5%;
+    margin-top: 0;
+    margin-bottom: 1%;
+    margin-left: 3%;
+    margin-right: 2em;
+    /* margin: 3.5%; */
 }
 .bit_section {
     width: 100%;
@@ -171,8 +176,8 @@ input {
     outline: none;
     font-family: 'Courier New', Courier, monospace;
     color: rgb(32, 24, 20);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
     text-decoration: none;
     display: inline-block; 
     font-size: 25px;
@@ -186,8 +191,8 @@ input {
 
 .input_element_correct {
     background-color:rgba(161, 212, 140, 1);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
     border: none;
     outline: none;
     font-family: 'Courier New', Courier, monospace;
@@ -205,8 +210,8 @@ input {
 .input_element_incorrect {
     background-color: rgba(235, 18, 18, 0.397);
     /* border-radius: 5px; */
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
     border: none;
     outline: none;
     font-family: 'Courier New', Courier, monospace;
@@ -242,4 +247,40 @@ input {
 
 #task_panel {
     opacity: 0.01;
+    border: 2px solid black;
+    border-radius: 1%;
+    margin: auto;
+}
+
+.task_number {
+    background-color:#bebdbd;
+    border:2px solid black;    
+    height:50px;
+    border-radius:50%;
+    -moz-border-radius:50%;
+    -webkit-border-radius:50%;
+    width:50px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: left;
+    align-items: center;
+    text-decoration: none;
+    /* display: inline-block; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    padding-bottom: 0;
+    padding-top: 0;
+    margin-top:auto;
+    margin-bottom:auto;
+    text-align:left;
+    margin-left: auto;
+    margin-right: 3.5%
+}
+
+.row_upper {
+    display: flex;
+    width: 700px;
+    padding-top: 0.5%;
+    /* border-top: solid black 2px; */
 }

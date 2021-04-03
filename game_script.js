@@ -33,8 +33,8 @@ for (var i = 0; i < elements.length; i++) {
 var calc_panel = document.getElementById("calc_panel");
 var button = GetId("exercises_button");
 button.onclick = function () {
-    fade(calc_panel);
-    calc_panel.remove();
+    //
+    fade(calc_panel, removeElement("calc_panel"));
     button.remove();
     startSession();
 };
@@ -47,14 +47,20 @@ function loadNextTask() {
     fadeIn(task_panel);
     loadTask1();
 }
+var task_number = 1;
 function startSession() {
     //let random_number = Math.floor(Math.random() * 2);
     loadNextTask();
 }
 function finishTask() {
-    //fade(GetId("task_panel"));
-    GetId("task_panel").remove();
+    task_number++;
+    fade1(GetId("task_panel"));
+    removeElement("task_panel");
     loadNextTask();
+}
+function removeElement(el) {
+    console.log("Function!");
+    GetId(el).remove();
 }
 function loadTask1() {
     // createTextRow(`Вычислите физический адрес следующей исполняемой команды.
@@ -65,6 +71,13 @@ function loadTask1() {
     var sp = Math.floor(Math.random() * 65535);
     task_1_fiz_address = (cs * 16 + ip).toString(16).toUpperCase();
     task_1_stack_address = (ss * 16 + sp).toString(16).toUpperCase();
+    var row = document.createElement("div");
+    CreateRow(row);
+    row.className = "row";
+    var task_num = document.createElement("p");
+    task_num.className = "task_number";
+    task_num.innerHTML = task_number.toString();
+    row.append(task_num);
     createBitRow("CS", cs);
     createBitRow("SS", ss);
     createBitRow("SP", sp);
@@ -110,7 +123,6 @@ function checkResult(e) {
         GetId("second_answ").className = "input_element_incorrect";
     }
     if ((first_answer == task_1_fiz_address) && (second_answer == task_1_stack_address)) {
-        setInterval(function () { }, 3000);
         finishTask();
     }
 }
@@ -182,19 +194,31 @@ function createBits(bit_row, suffix, random_number) {
         }
     }
 }
-function fade(element) {
+function fade(element, callback) {
+    var op = 1; // initial opacity
+    var timer = setInterval(function () {
+        if (op <= 0.1) {
+            console.log(op);
+            clearInterval(timer);
+            element.style.display = 'none';
+        }
+        element.style.opacity = op;
+        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+        op -= op * 0.1;
+    }, 20);
+    callback && callback();
+}
+function fade1(element) {
     var op = 1; // initial opacity
     var timer = setInterval(function () {
         if (op <= 0.1) {
             clearInterval(timer);
             element.style.display = 'none';
         }
-        console.log("test");
         element.style.opacity = op;
         element.style.filter = 'alpha(opacity=' + op * 100 + ")";
         op -= op * 0.1;
-    }, 3000);
-    return true;
+    }, 20);
 }
 function fadeIn(element) {
     var op = 0.01; // initial opacity
