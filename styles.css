@@ -22,7 +22,8 @@ body {
 
 .bit_button {
     /* background-color: #bebdbd;  */
-    background-color: #bebdbd;
+    /* background-color: #bebdbd; */
+    background-color: inherit;
     border: none;
     outline: none;
     color: rgb(32, 24, 20);
@@ -41,7 +42,8 @@ body {
 }
 
 .label_1 {
-    background-color: #bebdbd; /* Green */
+    /* background-color: #bebdbd;  */
+    background-color: inherit;
     border: none;
     outline: none;
     font-family: "Consolas", sans-serif;
@@ -63,7 +65,8 @@ body {
 }
 
 .bit_button:hover {
-    background-color: #a0a0a0;
+    /* background-color: #a0a0a0; */
+    background-color: #417c94;
     opacity: 1;
 }
 
@@ -109,7 +112,8 @@ body {
 
 .hex_label {
 
-    background-color: #bebdbd; /* Green */
+    /* background-color: #bebdbd;  */
+    background-color: inherit;
     border: none;
     outline: none;
     font-family: 'Courier New', Courier, monospace;
@@ -180,7 +184,8 @@ input::placeholder{
 }
 
 .menu_button:hover {
-    background-color: #979696;
+    /* background-color: #979696; */
+    background-color: #417c94;
     opacity: 1;
 }
 
