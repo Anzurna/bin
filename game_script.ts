@@ -60,7 +60,7 @@ function loadNextTask() {
     loadTask1();
 }
 
-var task_number : number = 1;
+//var task_number : number = 1;
 
 
 function startSession() {
@@ -71,7 +71,7 @@ function startSession() {
 
 function finishTask() {
 
-    task_number++;
+    //task_number++;
     fade1(GetId("task_panel"));
 
     removeElement("task_panel");
@@ -96,15 +96,15 @@ function loadTask1(){
     task_1_fiz_address = (cs * 16 + ip).toString(16).toUpperCase();
     task_1_stack_address = (ss * 16 + sp).toString(16).toUpperCase();
 
-    var row = document.createElement("div");
-    CreateRow(row);
-    row.className = "row"
-    var task_num = document.createElement("p");
-    task_num.className = "task_number";
-    task_num.innerHTML = task_number.toString();
-    row.append(task_num);
+    // var row = document.createElement("div");
+    // CreateRow(row);
+    // row.className = "row"
+    // var task_num = document.createElement("p");
+    // task_num.className = "task_number";
+    // task_num.innerHTML = task_number.toString();
+    // row.append(task_num);
 
-    createBitRow("CS", cs);
+    createFirstBitRow("CS", cs);
     createBitRow("SS", ss);
     createBitRow("SP", sp);
     createBitRow("IP", ip);
@@ -133,6 +133,11 @@ function loadTask1(){
     input_element.placeholder = "FFFFF";
     input_element.addEventListener('input', checkResult);
     // input_element.pattern = "[0-1]*"
+
+    var task_num = document.createElement("p");
+    task_num.className = "task_number";
+    //task_num.innerHTML = task_number.toString();
+    GetId("first_row").append(task_num);
 }
 
 function checkResult(e){
@@ -159,9 +164,6 @@ function checkResult(e){
    if ((first_answer == task_1_fiz_address) && (second_answer == task_1_stack_address)) {
        finishTask();
    }
-
-
-
 
 }
 
@@ -201,6 +203,20 @@ function createBitRow(suffix: string, random_number : number) {
      createBitRowDiv(bit_row);
      row.append(bit_row);
      createBits(bit_row, suffix, random_number);
+}
+
+function createFirstBitRow(suffix: string, random_number : number) {
+  
+     let row = document.createElement("div");
+     CreateRow(row); 
+     row.id = "first_row";
+
+     let bit_row  = document.createElement("div");
+     createBitRowDiv(bit_row);
+    
+     row.append(bit_row);
+     createBits(bit_row, suffix, random_number);
+
 }
 
 function CreateRow(row) {
