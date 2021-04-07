@@ -268,13 +268,14 @@ function fade(element, callback) {
             console.log(op)
             clearInterval(timer);
             element.style.display = 'none';
+            callback && callback();
             
         }
         element.style.opacity = op;
         element.style.filter = 'alpha(opacity=' + op * 100 + ")";
         op -= op * 0.1;
     }, 20);
-    callback && callback();
+    
 }
 
 function fade1(element) {
