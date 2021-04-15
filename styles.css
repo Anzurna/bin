@@ -30,7 +30,7 @@ body {
     margin:0 auto;
     padding-left: 0%;
     padding-right: 0%;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Consolas", monospace;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -59,7 +59,7 @@ body {
     border: none;
     outline: none;
     font-family: "Consolas", sans-serif;
-    font-family: 'Courier New', Courier, monospace; 
+    /* font-family: 'Courier New', Courier, monospace;  */
     color: rgb(32, 24, 20);
     text-decoration: none;
     text-align: center;
@@ -94,7 +94,7 @@ body {
 
 .row {
     display: flex;
-    width: 700px;
+    width: 50vw;
     padding-top: 0.5%;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -115,7 +115,7 @@ body {
 .hex_numbers {
   font-family: "Consolas", monospace;
   width: 100%;
-  letter-spacing: 0.08rem;
+  letter-spacing: 0.1rem;
   text-align: left;
   text-decoration: none;
   display: inline-block;
@@ -128,7 +128,7 @@ body {
     background-color: inherit;
     border: none;
     outline: none;
-    font-family: 'Courier New', Courier, monospace;
+    font-family:  "Consolas", Courier, monospace;
     color: rgb(32, 24, 20);
     text-decoration: none;
     display: inline-block;
@@ -157,6 +157,8 @@ body {
     font-style: italic;
     letter-spacing: 0rem;
     min-width: 20px;
+    font-family: "Consolas", monospace;
+    
 }
 
 
@@ -184,7 +186,7 @@ input::placeholder{
 
 .menu_button {
     background-color: transparent;
-    font-family: 'Courier New', Courier, monospace;
+    font-family:  "Consolas", Courier, monospace;
     font-size: 30px;
     border: none;
     outline: none;
