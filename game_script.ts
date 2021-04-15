@@ -8,6 +8,50 @@ function GetNumValue(id : string) : Number {
     return Number(document.getElementById(id).innerHTML);
 }
 
+
+
+window.onload = function() {
+    addCalculatorListeners()
+}
+
+function addCalculatorListeners() {
+    var input8 = GetId("ol_0")
+    input8.addEventListener("mouseenter", function( event ) {
+        GetId("oct_addit_1").classList.remove("hidden");
+        GetId("oct_addit_2").classList.remove("hidden");
+        var hidden_octal_separators = document.querySelectorAll(".oct_label_hidden")
+        for (var i = 0; i < hidden_octal_separators.length; i++) {
+            hidden_octal_separators.item(i).classList.toggle("label_1", true);
+            hidden_octal_separators.item(i).classList.toggle("oct_label_hidden", false);
+        }
+    }, false);
+    input8.addEventListener("mouseleave", function( event ) {
+        GetId("oct_addit_1").classList.add("hidden");
+        GetId("oct_addit_2").classList.add("hidden");
+        var hidden_octal_separators = document.querySelectorAll(".label_1")
+        for (var i = 0; i < hidden_octal_separators.length; i++) {
+            hidden_octal_separators.item(i).classList.toggle("label_1", false);
+            hidden_octal_separators.item(i).classList.toggle("oct_label_hidden", true);    
+        }
+    }, false);
+
+    var input16 = GetId("hl_0")
+        input16.addEventListener("mouseenter", function( event ) {
+        var hidden_hex_separators = document.querySelectorAll(".hex_label_hidden")
+        for (var i = 0; i < hidden_hex_separators.length; i++) {
+            hidden_hex_separators.item(i).classList.toggle("label_1", true);
+            hidden_hex_separators.item(i).classList.toggle("hex_label_hidden", false);
+        }
+    }, false);
+    input16.addEventListener("mouseleave", function( event ) {
+        var hidden_hex_separators = document.querySelectorAll(".label_1")
+        for (var i = 0; i < hidden_hex_separators.length; i++) {
+            hidden_hex_separators.item(i).classList.toggle("label_1", false);
+            hidden_hex_separators.item(i).classList.toggle("hex_label_hidden", true);    
+        }
+    }, false);
+}
+
 function FlipBit(button) {
     var byte_arr = []
     byte_arr = byte_str.split("");

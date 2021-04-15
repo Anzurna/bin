@@ -41,6 +41,18 @@ body {
     border-radius: 2px;
 }
 
+.hidden {
+    display: none;
+}
+
+.oct_label_hidden {
+    display: none;
+}
+
+.hex_label_hidden {
+    display: none;
+}
+
 .label_1 {
     /* background-color: #bebdbd;  */
     background-color: inherit;
@@ -56,7 +68,7 @@ body {
     margin:0 auto;
     padding-left: 0%;
     padding-right: 0%;
-    font-size: 30px;
+    font-size: 20px;
     opacity: 1;
     transition: 0.7s;
 }
@@ -103,7 +115,7 @@ body {
 .hex_numbers {
   font-family: "Consolas", monospace;
   width: 100%;
-  letter-spacing: 0.25rem;
+  letter-spacing: 0.08rem;
   text-align: left;
   text-decoration: none;
   display: inline-block;
