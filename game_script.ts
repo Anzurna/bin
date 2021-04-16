@@ -12,7 +12,16 @@ function GetNumValue(id : string) : Number {
 
 window.onload = function() {
     addCalculatorListeners()
+    addMenuListeners()
 }
+
+function toggleBetweenClasses(items, firstClass : string, secondClass : string) {
+    for (var i = 0; i < items.length; i++) {
+            items.item(i).classList.toggle(firstClass, true);           
+            items.item(i).classList.toggle(secondClass, false);
+        }
+}
+
 
 function addCalculatorListeners() {
     var input8 = GetId("ol_0")
@@ -20,35 +29,26 @@ function addCalculatorListeners() {
         GetId("oct_addit_1").classList.remove("hidden");
         GetId("oct_addit_2").classList.remove("hidden");
         var hidden_octal_separators = document.querySelectorAll(".oct_label_hidden")
-        for (var i = 0; i < hidden_octal_separators.length; i++) {
-            hidden_octal_separators.item(i).classList.toggle("label_1", true);
-            hidden_octal_separators.item(i).classList.toggle("oct_label_hidden", false);
-        }
+        toggleBetweenClasses(hidden_octal_separators, "label_1", "oct_label_hidden");
     }, false);
+
     input8.addEventListener("mouseleave", function( event ) {
         GetId("oct_addit_1").classList.add("hidden");
         GetId("oct_addit_2").classList.add("hidden");
-        var hidden_octal_separators = document.querySelectorAll(".label_1")
-        for (var i = 0; i < hidden_octal_separators.length; i++) {
-            hidden_octal_separators.item(i).classList.toggle("label_1", false);
-            hidden_octal_separators.item(i).classList.toggle("oct_label_hidden", true);    
-        }
+        var octal_separators = document.querySelectorAll(".label_1")
+        toggleBetweenClasses(octal_separators, "oct_label_hidden", "label_1");
     }, false);
 
     var input16 = GetId("hl_0")
-        input16.addEventListener("mouseenter", function( event ) {
+
+    input16.addEventListener("mouseenter", function( event ) {
         var hidden_hex_separators = document.querySelectorAll(".hex_label_hidden")
-        for (var i = 0; i < hidden_hex_separators.length; i++) {
-            hidden_hex_separators.item(i).classList.toggle("label_1", true);
-            hidden_hex_separators.item(i).classList.toggle("hex_label_hidden", false);
-        }
+        toggleBetweenClasses(hidden_hex_separators, "label_1", "hex_label_hidden");
     }, false);
+
     input16.addEventListener("mouseleave", function( event ) {
-        var hidden_hex_separators = document.querySelectorAll(".label_1")
-        for (var i = 0; i < hidden_hex_separators.length; i++) {
-            hidden_hex_separators.item(i).classList.toggle("label_1", false);
-            hidden_hex_separators.item(i).classList.toggle("hex_label_hidden", true);    
-        }
+        var hex_separators = document.querySelectorAll(".label_1")
+        toggleBetweenClasses(hex_separators, "hex_label_hidden", "label_1");
     }, false);
 }
 
@@ -80,16 +80,23 @@ for (var i = 0; i < elements.length; i++) {
     });
 }
 
-var calc_panel = document.getElementById("calc_panel");
-var button = GetId("exercises_button");
+function addMenuListeners() {
+    var calc_panel = document.getElementById("calc_panel");
+    var x86_button = GetId("exercises_button");
 
- button.onclick = function() { 
-     //
-    fade(calc_panel, removeElement("calc_panel"));
-    button.remove();
-    startSession();
-
+    x86_button.onclick = function() { 
+        fade(calc_panel, removeElement("calc_panel"));
+        x86_button.remove();
+        startSession();
     }
+
+    var binary_excercises_button = GetId("binary_tasks_start");
+    binary_excercises_button.onclick = function() {
+        fade(calc_panel, removeElement("calc_panel"));
+    }
+}
+
+
 
 var task_1_fiz_address : string;
 var task_1_stack_address : string;

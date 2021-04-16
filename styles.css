@@ -27,14 +27,14 @@ body {
     border: none;
     outline: none;
     color: rgb(32, 24, 20);
-    margin:0 auto;
+    margin:auto;
     padding-left: 0%;
     padding-right: 0%;
     font-family: "Consolas", monospace;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    width: fit-content;
+    /* width: fit-content; */
     font-size: 30px;
     opacity: 1;
     transition: 0.7s;
@@ -54,7 +54,6 @@ body {
 }
 
 .label_1 {
-    /* background-color: #bebdbd;  */
     background-color: inherit;
     border: none;
     outline: none;
@@ -64,8 +63,7 @@ body {
     text-decoration: none;
     text-align: center;
     display: inline-block;
-    width: fit-content;
-    margin:0 auto;
+    margin:auto;
     padding-left: 0%;
     padding-right: 0%;
     font-size: 20px;
@@ -94,7 +92,7 @@ body {
 
 .row {
     display: flex;
-    width: 50vw;
+    width: 60vw;
     padding-top: 0.5%;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -115,7 +113,7 @@ body {
 .hex_numbers {
   font-family: "Consolas", monospace;
   width: 100%;
-  letter-spacing: 0.1rem;
+  /* letter-spacing: 0rem; */
   text-align: left;
   text-decoration: none;
   display: inline-block;
@@ -191,9 +189,13 @@ input::placeholder{
     border: none;
     outline: none;
     text-align: left;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     /* outline: solid 5px #FC5185;
     transition: outline 0.6s linear; */
+    border-bottom: 1px solid black;
+    margin-right: 3%;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
     transition: 0.7s;
 }
 
@@ -201,6 +203,7 @@ input::placeholder{
     /* background-color: #979696; */
     background-color: #417c94;
     opacity: 1;
+
 }
 
 .task_string {
