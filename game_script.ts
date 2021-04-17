@@ -134,7 +134,19 @@ function loadNextTask() {
         loadTask1();
     }
     if (typeOfSession == "binary") {
-        loadBinaryTask_1();
+        let task_selector = Math.floor(Math.random() * 3);
+        console.log(task_selector);
+        switch (task_selector) {
+            case 0: 
+                loadBinaryTask_1();
+                break;
+            case 1: 
+                loadBinaryTask_2();
+                break;
+            case 2:
+                loadNetTask_1();
+                break;
+        }       
     }
     
 }
@@ -143,8 +155,6 @@ function loadNextTask() {
 
 
 function finishTask() {
-
-    //task_number++;
     var task_panel = GetId("task_panel");
     setTimeout(() => fade1(task_panel), 500);
 
@@ -161,8 +171,8 @@ function removeElement(el : string) {
 
 
 function loadBinaryTask_1() {
-    var scale_from : number = 0;
-    var scale_to : number = 0;
+    let scale_from : number = 0;
+    let scale_to : number = 0;
     while (scale_from == scale_to) {
         scale_from = Math.floor(Math.random() * 4);
         scale_to = Math.floor(Math.random() * 4);
@@ -190,10 +200,102 @@ function loadBinaryTask_1() {
             GetId("bin_task_input").className = "input_element_incorrect";
         }
     }
-
-    // var element = `<div class="row"><div class="hex_numbers">${random}</div></div>`;
-    // GetId("task_panel").insertAdjacentHTML("beforeend",element);
 }
+
+function loadBinaryTask_2() {
+    let task_2_type = Math.floor(Math.random() * 2);
+    
+    let operand_1_scale : number = 10;
+    let operand_2_scale : number = 10;
+    while (operand_1_scale == 10 && operand_1_scale == 10) {
+        operand_1_scale = scale_of_notation_types[Math.floor(Math.random() * 4)];
+        operand_2_scale= scale_of_notation_types[Math.floor(Math.random() * 4)];
+    }
+    let result_scale = scale_of_notation_types[Math.floor(Math.random() * 4)];
+
+    let operand_1 = Math.floor(Math.random() * 4096);
+    let operand_2 = Math.floor(Math.random() * 4096);
+
+    let operand_1_str = transform(operand_1, operand_1_scale);
+    let operand_2_str = transform(operand_2, operand_2_scale);
+
+    
+    let result : number;
+
+    if (task_2_type == 0) {
+        createTextRow(`Сложите числа.`);
+        result = operand_1 + operand_2;
+    } else if (task_2_type == 1) {
+        createTextRow(`Вычтите второе число из первого. Результат может быть отрицательным.`);
+        result = operand_1 - operand_2;
+    }
+
+    let result_str = transform(result, result_scale);
+    addHintedRow(operand_1_scale.toString(), operand_1_str);
+    addHintedRow(operand_2_scale.toString(), operand_2_str);
+
+    addHintedRowWithInputAndButton(result_scale.toString(), "bin_task_button", "bin_task_input");
+    console.log(result_str);
+    GetId("bin_task_button").onclick = function() { 
+        if (GetId("bin_task_input").value == result_str) {            
+            GetId("bin_task_input").className = "input_element_correct";
+            finishTask()
+        } else {
+            GetId("bin_task_input").className = "input_element_incorrect";
+        }
+    }
+}
+
+function loadNetTask_1() {
+    let net_task_1_type = Math.floor(Math.random() * 2);
+    let net_ip = [0, 0, 0, 0];
+    let host_ip = [0, 0, 0, 0];
+    let netmask = [0, 0, 0, 0];
+    for(let i = 0; i < 4; i++) {
+        net_ip[i] =  Math.floor(Math.random() * 256);
+        netmask[i] = Math.floor(Math.random() * 256);
+        host_ip[i] = net_ip[i] & netmask[i];
+
+    }
+    let convergeIP = function(array) {
+        let ip : string = "";
+        for(let byte = 0; byte < 4; byte++) {
+            ip += array[byte].toString() + "."
+        }
+        return ip.substring(0, ip.length - 1);
+    };
+
+    let host_ip_str = convergeIP(host_ip);
+    let answer : string;
+    if (net_task_1_type == 0) {
+        createTextRow(`Вычислите адрес хоста.`);
+        addHintedRow("IP сети&nbsp", convergeIP(net_ip));
+        addHintedRow("Маска&nbsp&nbsp&nbsp", convergeIP(netmask));
+        addHintedRowWithInputAndButton("IP хоста", "bin_task_button", "bin_task_input");
+        answer = host_ip_str;
+    } else if (net_task_1_type == 1) {
+        createTextRow(`Вычислите адрес cети.`);
+        addHintedRow("IP хоста", host_ip_str);
+        addHintedRow("Маска&nbsp&nbsp&nbsp", convergeIP(netmask));
+        addHintedRowWithInputAndButton("IP сети&nbsp", "bin_task_button", "bin_task_input");
+        answer = convergeIP(net_ip)
+    }
+    
+    console.log(host_ip_str)
+
+
+
+    GetId("bin_task_button").onclick = function() { 
+        if (GetId("bin_task_input").value == answer) {            
+            GetId("bin_task_input").className = "input_element_correct";
+            finishTask()
+        } else {
+            GetId("bin_task_input").className = "input_element_incorrect";
+        }
+    }
+
+}
+
 
 function addHintedRow(hint:string, value: string) {
     var element = `<div class="row">
@@ -218,30 +320,27 @@ function addHintedRowWithInputAndButton(hint:string, button_id: string, input_id
 }
 
 function genTranslateTaskConditions(scale_from : number, scale_to : number) {
-    var random = Math.floor(Math.random() * 65536);
+    let random : number = 0;
+    while (random < 50) {
+        random = Math.floor(Math.random() * 4096);
+    }
+
     var question : string = transform(random, scale_from);
     var answer = transform(random, scale_to);
 
     return {"question": question, "answer": answer}
 }
 
-function transform(num : number, scale_target : number) : string{
+function transform(num : number, scale_target : number) : string {
     switch(scale_target) {
-        case 2:
-            return num.toString(2);
-        case 8:
-            return num.toString(8);
-        case 16: 
-            return num.toString(16).toUpperCase();
-        default:
-            return num.toString();
+        case 2: return num.toString(2);
+        case 8: return num.toString(8);
+        case 16: return num.toString(16).toUpperCase();
+        default: return num.toString();
     }
 }
 
 function loadTask1(){
-    // createTextRow(`Вычислите физический адрес следующей исполняемой команды.
-    // Вычислите адрес вершины стека.`);
-
     let cs = Math.floor(Math.random() * 65535);
     let ss = Math.floor(Math.random() * 65535);
     let ip = Math.floor(Math.random() * 65535);
@@ -249,14 +348,6 @@ function loadTask1(){
 
     task_1_fiz_address = (cs * 16 + ip).toString(16).toUpperCase();
     task_1_stack_address = (ss * 16 + sp).toString(16).toUpperCase();
-
-    // var row = document.createElement("div");
-    // CreateRow(row);
-    // row.className = "row"
-    // var task_num = document.createElement("p");
-    // task_num.className = "task_number";
-    // task_num.innerHTML = task_number.toString();
-    // row.append(task_num);
 
     createFirstBitRow("CS", cs);
     createBitRow("SS", ss);

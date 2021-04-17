@@ -108,12 +108,23 @@ function loadNextTask() {
         loadTask1();
     }
     if (typeOfSession == "binary") {
-        loadBinaryTask_1();
+        var task_selector = Math.floor(Math.random() * 3);
+        console.log(task_selector);
+        switch (task_selector) {
+            case 0:
+                loadBinaryTask_1();
+                break;
+            case 1:
+                loadBinaryTask_2();
+                break;
+            case 2:
+                loadNetTask_1();
+                break;
+        }
     }
 }
 //var task_number : number = 1;
 function finishTask() {
-    //task_number++;
     var task_panel = GetId("task_panel");
     setTimeout(function () { return fade1(task_panel); }, 500);
     setTimeout(function () { return removeElement("task_panel"); }, 1000);
@@ -149,8 +160,87 @@ function loadBinaryTask_1() {
             GetId("bin_task_input").className = "input_element_incorrect";
         }
     };
-    // var element = `<div class="row"><div class="hex_numbers">${random}</div></div>`;
-    // GetId("task_panel").insertAdjacentHTML("beforeend",element);
+}
+function loadBinaryTask_2() {
+    var task_2_type = Math.floor(Math.random() * 2);
+    var operand_1_scale = 10;
+    var operand_2_scale = 10;
+    while (operand_1_scale == 10 && operand_1_scale == 10) {
+        operand_1_scale = scale_of_notation_types[Math.floor(Math.random() * 4)];
+        operand_2_scale = scale_of_notation_types[Math.floor(Math.random() * 4)];
+    }
+    var result_scale = scale_of_notation_types[Math.floor(Math.random() * 4)];
+    var operand_1 = Math.floor(Math.random() * 4096);
+    var operand_2 = Math.floor(Math.random() * 4096);
+    var operand_1_str = transform(operand_1, operand_1_scale);
+    var operand_2_str = transform(operand_2, operand_2_scale);
+    var result;
+    if (task_2_type == 0) {
+        createTextRow("\u0421\u043B\u043E\u0436\u0438\u0442\u0435 \u0447\u0438\u0441\u043B\u0430.");
+        result = operand_1 + operand_2;
+    }
+    else if (task_2_type == 1) {
+        createTextRow("\u0412\u044B\u0447\u0442\u0438\u0442\u0435 \u0432\u0442\u043E\u0440\u043E\u0435 \u0447\u0438\u0441\u043B\u043E \u0438\u0437 \u043F\u0435\u0440\u0432\u043E\u0433\u043E. \u0420\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442 \u043C\u043E\u0436\u0435\u0442 \u0431\u044B\u0442\u044C \u043E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u043C.");
+        result = operand_1 - operand_2;
+    }
+    var result_str = transform(result, result_scale);
+    addHintedRow(operand_1_scale.toString(), operand_1_str);
+    addHintedRow(operand_2_scale.toString(), operand_2_str);
+    addHintedRowWithInputAndButton(result_scale.toString(), "bin_task_button", "bin_task_input");
+    console.log(result_str);
+    GetId("bin_task_button").onclick = function () {
+        if (GetId("bin_task_input").value == result_str) {
+            GetId("bin_task_input").className = "input_element_correct";
+            finishTask();
+        }
+        else {
+            GetId("bin_task_input").className = "input_element_incorrect";
+        }
+    };
+}
+function loadNetTask_1() {
+    var net_task_1_type = Math.floor(Math.random() * 2);
+    var net_ip = [0, 0, 0, 0];
+    var host_ip = [0, 0, 0, 0];
+    var netmask = [0, 0, 0, 0];
+    for (var i = 0; i < 4; i++) {
+        net_ip[i] = Math.floor(Math.random() * 256);
+        netmask[i] = Math.floor(Math.random() * 256);
+        host_ip[i] = net_ip[i] & netmask[i];
+    }
+    var convergeIP = function (array) {
+        var ip = "";
+        for (var byte = 0; byte < 4; byte++) {
+            ip += array[byte].toString() + ".";
+        }
+        return ip.substring(0, ip.length - 1);
+    };
+    var host_ip_str = convergeIP(host_ip);
+    var answer;
+    if (net_task_1_type == 0) {
+        createTextRow("\u0412\u044B\u0447\u0438\u0441\u043B\u0438\u0442\u0435 \u0430\u0434\u0440\u0435\u0441 \u0445\u043E\u0441\u0442\u0430.");
+        addHintedRow("IP сети&nbsp", convergeIP(net_ip));
+        addHintedRow("Маска&nbsp&nbsp&nbsp", convergeIP(netmask));
+        addHintedRowWithInputAndButton("IP хоста", "bin_task_button", "bin_task_input");
+        answer = host_ip_str;
+    }
+    else if (net_task_1_type == 1) {
+        createTextRow("\u0412\u044B\u0447\u0438\u0441\u043B\u0438\u0442\u0435 \u0430\u0434\u0440\u0435\u0441 c\u0435\u0442\u0438.");
+        addHintedRow("IP хоста", host_ip_str);
+        addHintedRow("Маска&nbsp&nbsp&nbsp", convergeIP(netmask));
+        addHintedRowWithInputAndButton("IP сети&nbsp", "bin_task_button", "bin_task_input");
+        answer = convergeIP(net_ip);
+    }
+    console.log(host_ip_str);
+    GetId("bin_task_button").onclick = function () {
+        if (GetId("bin_task_input").value == answer) {
+            GetId("bin_task_input").className = "input_element_correct";
+            finishTask();
+        }
+        else {
+            GetId("bin_task_input").className = "input_element_incorrect";
+        }
+    };
 }
 function addHintedRow(hint, value) {
     var element = "<div class=\"row\">\n                        <div class=\"hex_numbers\">\n                            <p class=\"hint\">" + hint + "</p>\n                            <div class=\"hex_label\">" + value + " </div>\n                        </div>\n                    </div>";
@@ -161,39 +251,29 @@ function addHintedRowWithInputAndButton(hint, button_id, input_id) {
     GetId("task_panel").insertAdjacentHTML("beforeend", element);
 }
 function genTranslateTaskConditions(scale_from, scale_to) {
-    var random = Math.floor(Math.random() * 65536);
+    var random = 0;
+    while (random < 50) {
+        random = Math.floor(Math.random() * 4096);
+    }
     var question = transform(random, scale_from);
     var answer = transform(random, scale_to);
     return { "question": question, "answer": answer };
 }
 function transform(num, scale_target) {
     switch (scale_target) {
-        case 2:
-            return num.toString(2);
-        case 8:
-            return num.toString(8);
-        case 16:
-            return num.toString(16).toUpperCase();
-        default:
-            return num.toString();
+        case 2: return num.toString(2);
+        case 8: return num.toString(8);
+        case 16: return num.toString(16).toUpperCase();
+        default: return num.toString();
     }
 }
 function loadTask1() {
-    // createTextRow(`Вычислите физический адрес следующей исполняемой команды.
-    // Вычислите адрес вершины стека.`);
     var cs = Math.floor(Math.random() * 65535);
     var ss = Math.floor(Math.random() * 65535);
     var ip = Math.floor(Math.random() * 65535);
     var sp = Math.floor(Math.random() * 65535);
     task_1_fiz_address = (cs * 16 + ip).toString(16).toUpperCase();
     task_1_stack_address = (ss * 16 + sp).toString(16).toUpperCase();
-    // var row = document.createElement("div");
-    // CreateRow(row);
-    // row.className = "row"
-    // var task_num = document.createElement("p");
-    // task_num.className = "task_number";
-    // task_num.innerHTML = task_number.toString();
-    // row.append(task_num);
     createFirstBitRow("CS", cs);
     createBitRow("SS", ss);
     createBitRow("SP", sp);

@@ -241,7 +241,7 @@ input::placeholder{
     letter-spacing: 0;
     border-bottom: solid 1px black; 
     min-width: 20%;
-    max-width: 20%;
+    max-width: 30%;
 }
 
 
@@ -259,7 +259,7 @@ input::placeholder{
     transition: 0.7s;
     letter-spacing: 0;
     min-width: 20%;
-    max-width: 20%;
+    max-width: 30%;
 }
 
 .input_element_incorrect {
@@ -278,7 +278,7 @@ input::placeholder{
     letter-spacing: 0;
     border-bottom: solid 1px #636363;
     min-width: 20%;
-    max-width: 20%;
+    max-width: 30%;
 }
 
 .bit_button_2 {
