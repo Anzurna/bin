@@ -92,7 +92,7 @@ body {
 
 .row {
     display: flex;
-    width: 60vw;
+    width: 700px;
     padding-top: 0.5%;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -126,7 +126,7 @@ body {
     background-color: inherit;
     border: none;
     outline: none;
-    font-family:  "Consolas", Courier, monospace;
+    font-family:  "Consolas", monospace;
     color: rgb(32, 24, 20);
     text-decoration: none;
     display: inline-block;
