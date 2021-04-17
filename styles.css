@@ -130,7 +130,7 @@ body {
     color: rgb(32, 24, 20);
     text-decoration: none;
     display: inline-block;
-    font-size: 30px;
+    font-size: 25px;
     opacity: 1;
     transition: 0.7s;
 }
@@ -179,13 +179,13 @@ input {
 
 input::placeholder{
     color:rgba(0, 0, 0, 0.568);
-    border-bottom: solid 1px rgba(0, 0, 0, 0.568);
+    /* border-bottom: solid 1px rgba(0, 0, 0, 0.568); */
 }
 
 .menu_button {
     background-color: transparent;
     font-family:  "Consolas", Courier, monospace;
-    font-size: 30px;
+    font-size: 25px;
     border: none;
     outline: none;
     text-align: left;
@@ -239,7 +239,7 @@ input::placeholder{
     opacity: 1;
     transition: 0.7s;
     letter-spacing: 0;
-    border-bottom: solid 1px #636363;
+    border-bottom: solid 1px black; 
     min-width: 20%;
     max-width: 20%;
 }

@@ -1,3 +1,23 @@
+var scale_of_notation_types = [2, 8, 16, 10];
+
+var bin_information_from = {
+    2: "двоичной",
+    8: "восьмеричной",
+    10: "десятичной",
+    16: "шестнадцатеричной"
+};
+
+var bin_information_to = {
+    2: "двоичную",
+    8: "восьмеричную",
+    10: "десятичную",
+    16: "шестнадцатеричную"
+};
+
+var task_1_fiz_address : string;
+var task_1_stack_address : string;
+var typeOfSession : string;
+
 function GetId(id : string) {
     return document.getElementById(id);
 }
@@ -13,6 +33,13 @@ function GetNumValue(id : string) : Number {
 window.onload = function() {
     addCalculatorListeners()
     addMenuListeners()
+    var elements = document.getElementsByClassName("bit_button");
+
+    for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('click', function() {
+    FlipBit(this); //Here you will need to use the param.
+    });
+}
 }
 
 function toggleBetweenClasses(items, firstClass : string, secondClass : string) {
@@ -72,13 +99,7 @@ function FlipBit(button) {
     // CalcHex(dec_number, "ol", 8, 6);
 }
 
-var elements = document.getElementsByClassName("bit_button");
 
-for (var i = 0; i < elements.length; i++) {
-    elements[i].addEventListener('click', function() {
-    FlipBit(this); //Here you will need to use the param.
-    });
-}
 
 function addMenuListeners() {
     var calc_panel = document.getElementById("calc_panel");
@@ -87,19 +108,21 @@ function addMenuListeners() {
     x86_button.onclick = function() { 
         fade(calc_panel, removeElement("calc_panel"));
         x86_button.remove();
-        startSession();
+        startSession("x86");
     }
 
     var binary_excercises_button = GetId("binary_tasks_start");
     binary_excercises_button.onclick = function() {
         fade(calc_panel, removeElement("calc_panel"));
+        startSession("binary");
     }
 }
 
-
-
-var task_1_fiz_address : string;
-var task_1_stack_address : string;
+function startSession(_typeOfSession: string) {
+    //let random_number = Math.floor(Math.random() * 2);
+    typeOfSession = _typeOfSession;
+    loadNextTask();    
+}
 
 function loadNextTask() {   
     var task_panel = document.createElement("div");
@@ -107,32 +130,112 @@ function loadNextTask() {
 
     GetId("main").append(task_panel);
     fadeIn(task_panel);
-
-    loadTask1();
+    if (typeOfSession == "x86") {
+        loadTask1();
+    }
+    if (typeOfSession == "binary") {
+        loadBinaryTask_1();
+    }
+    
 }
 
 //var task_number : number = 1;
 
 
-function startSession() {
-
-    //let random_number = Math.floor(Math.random() * 2);
-    loadNextTask();
-}
-
 function finishTask() {
 
     //task_number++;
-    fade1(GetId("task_panel"));
+    var task_panel = GetId("task_panel");
+    setTimeout(() => fade1(task_panel), 500);
 
-    removeElement("task_panel");
-
-    loadNextTask();
+    setTimeout(() => removeElement("task_panel"), 1000);
+    setTimeout(loadNextTask, 1000);
+    // loadNextTask();
 }
 
 function removeElement(el : string) {
     console.log("Function!")
     GetId(el).remove();
+}
+
+
+
+function loadBinaryTask_1() {
+    var scale_from : number = 0;
+    var scale_to : number = 0;
+    while (scale_from == scale_to) {
+        scale_from = Math.floor(Math.random() * 4);
+        scale_to = Math.floor(Math.random() * 4);
+    }
+    scale_from = scale_of_notation_types[scale_from];
+    scale_to = scale_of_notation_types[scale_to];
+
+    let scale_from_name  = bin_information_from[scale_from];
+    let scale_to_name = bin_information_to[scale_to];
+
+    createTextRow(`Переведите число из ${scale_from_name} системы счисления в ${scale_to_name}.`);
+
+    var conditions = genTranslateTaskConditions(scale_from, scale_to)
+
+    addHintedRow(scale_from.toString(), conditions["question"]);
+    console.log(conditions["answer"])
+    addHintedRowWithInputAndButton(scale_to, "bin_task_button", "bin_task_input")
+
+    GetId("bin_task_button").onclick = function() {
+        if (GetId("bin_task_input").value == conditions["answer"]) {
+            GetId("bin_task_input").className = "input_element_correct";
+           
+            finishTask()
+        } else {
+            GetId("bin_task_input").className = "input_element_incorrect";
+        }
+    }
+
+    // var element = `<div class="row"><div class="hex_numbers">${random}</div></div>`;
+    // GetId("task_panel").insertAdjacentHTML("beforeend",element);
+}
+
+function addHintedRow(hint:string, value: string) {
+    var element = `<div class="row">
+                        <div class="hex_numbers">
+                            <p class="hint">${hint}</p>
+                            <div class="hex_label">${value} </div>
+                        </div>
+                    </div>`;
+
+    GetId("task_panel").insertAdjacentHTML("beforeend",element);
+}
+function addHintedRowWithInputAndButton(hint:string, button_id: string, input_id:string) {
+    var element = `<div class="row">
+                        <div class="hex_numbers">
+                            <p class="hint">${hint}</p>
+                            <input class="input_element" id="${input_id}" type="text" placeholder="0">
+                            <button class="menu_button" id="${button_id}" type="button">Проверить</button>
+                        </div>
+                    </div>`;
+
+    GetId("task_panel").insertAdjacentHTML("beforeend",element);
+}
+
+function genTranslateTaskConditions(scale_from : number, scale_to : number) {
+    var random = Math.floor(Math.random() * 65536);
+    var question : string = transform(random, scale_from);
+    var answer = transform(random, scale_to);
+
+    return {"question": question, "answer": answer}
+}
+
+function transform(num : number, scale_target : number) : string{
+    switch(scale_target) {
+        case 2:
+            return num.toString(2);
+        case 8:
+            return num.toString(8);
+        case 16: 
+            return num.toString(16).toUpperCase();
+        default:
+            return num.toString();
+    }
 }
 
 function loadTask1(){
@@ -230,7 +333,7 @@ function createTextRow(text : string) {
 function CalcHex(dec_number : number, id_base : string, dig_capasity : number, amount : number) {
     var hex_string : string = dec_number.toString(dig_capasity);
     hex_string = hex_string.split("").reverse().join("");
-    for (i = 0; i < amount; i++) {
+    for (let i = 0; i < amount; i++) {
         if (hex_string.length > i) {
             GetId(id_base + "_" + (i)).innerHTML = hex_string.charAt(i).toUpperCase();
         } else {
