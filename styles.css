@@ -351,3 +351,29 @@ background-image: linear-gradient(315deg, #417c94 0%, #4f93ad 74%);
     padding-top: 0.5%;
     /* border-top: solid black 2px; */
 }
+
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+.menu_checkbox {
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+    height: 25x;
+    width: 25px;
+    background-color: rgb(202, 21, 21);
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .container:hover input ~ .menu_checkbox {
+    background-color: #ccc;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .container input:checked ~ .menu_checkbox {
+    background-color: #2196F3;
+  }

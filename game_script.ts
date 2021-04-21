@@ -36,10 +36,10 @@ window.onload = function() {
     var elements = document.getElementsByClassName("bit_button");
 
     for (var i = 0; i < elements.length; i++) {
-    elements[i].addEventListener('click', function() {
-    FlipBit(this); //Here you will need to use the param.
-    });
-}
+        elements[i].addEventListener('click', function() {
+        FlipBit(this); //Here you will need to use the param.
+        });
+    }
 }
 
 function toggleBetweenClasses(items, firstClass : string, secondClass : string) {
@@ -114,7 +114,48 @@ function addMenuListeners() {
     var binary_excercises_button = GetId("binary_tasks_start");
     binary_excercises_button.onclick = function() {
         fade(calc_panel, removeElement("calc_panel"));
-        startSession("binary");
+
+        // startSession("binary");
+            var task_panel = document.createElement("div");
+            task_panel.id = "task_panel";
+
+            GetId("main").append(task_panel);
+            fadeIn(task_panel);
+            loadBinaryMenu()
+    }
+}
+
+const blocked_tasks = new Set()
+
+function loadBinaryMenu() {
+    let number_of_tasks : number = 4;
+    createTextRow(`Выберите типы задач.`);
+    addCheckboxRow("12", "Перевод из одной системы счисления в другую");
+    addCheckboxRow("12", "Недесятичная арифметика");
+    addCheckboxRow("12", "Задачи с IP адресами");
+    addCheckboxRow("12", "Логический сдвиг");
+
+    let elements = document.getElementsByClassName("menu_checkbox");
+
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].value = i;
+        elements[i].addEventListener('change', function() {
+            if (blocked_tasks.has(this.value)) {
+                blocked_tasks.delete(this.value);
+            } else {
+                blocked_tasks.add(this.value);
+            }
+        });
+    }
+    addRowWithButton("start_binary_session", "Начать")
+     GetId("start_binary_session").onclick = function() {
+        if (blocked_tasks.size < number_of_tasks) {               
+            var task_panel = GetId("task_panel");
+            setTimeout(() => fade1(task_panel), 500);
+
+            setTimeout(() => removeElement("task_panel"), 1000);
+            setTimeout(() => startSession("binary"), 1000);
+        }
     }
 }
 
@@ -134,19 +175,30 @@ function loadNextTask() {
         loadTask1();
     }
     if (typeOfSession == "binary") {
-        let task_selector = Math.floor(Math.random() * 3);
-        console.log(task_selector);
-        switch (task_selector) {
-            case 0: 
-                loadBinaryTask_1();
+        while (true) {
+            let task_selector = (Math.floor(Math.random() * 4)).toString(); 
+            if (blocked_tasks.has(task_selector)) {
+                continue;     
+            } else {
+                console.log(task_selector);
+                switch (task_selector) {
+                    case "0": 
+                        loadBinaryTask_1();
+                        break;
+                    case "1": 
+                        loadBinaryTask_2();
+                        break;
+                    case "2":
+                        loadNetTask_1();
+                        break;
+                    case "3":
+                        loadShiftTask_1();
+                        break;
+
+                }  
                 break;
-            case 1: 
-                loadBinaryTask_2();
-                break;
-            case 2:
-                loadNetTask_1();
-                break;
-        }       
+            }  
+        }
     }
     
 }
@@ -168,7 +220,55 @@ function removeElement(el : string) {
     GetId(el).remove();
 }
 
+function getRandomNumber(range : number) : number {
+    return (Math.floor(Math.random() * range));
+}
 
+
+function loadShiftTask_1() {
+    let direction_select : number = getRandomNumber(2);
+    let shift_amount : number= getRandomNumber(3) + 1;
+    let direction_str : string = "";
+    let byte_str : string = "";
+
+    let result;
+    let number = getRandomNumber(2048);
+    let number_transformed = transform(number, 2)
+
+    if (direction_select == 0) {
+        direction_str = "влево"
+        result = number << shift_amount;
+
+    } else {
+        direction_str = "вправо" 
+        result = number >>> shift_amount;
+    }
+    if (shift_amount > 1) {
+        byte_str = "бита"
+    } else {
+        byte_str = "бит"
+    }
+    createTextRow(`Выполните логический сдвиг беззнакового 
+        двухбайтового целого ${direction_str} на ${shift_amount} ${byte_str}.`);
+
+    
+
+    addHintedRow("2", number_transformed)
+    
+    console.log(transform(result, 16))
+    addHintedRowWithInputAndButton("16", "bin_task_button", "bin_task_input")
+
+    GetId("bin_task_button").onclick = function() {
+        if (GetId("bin_task_input").value == transform(result, 16)) {
+            GetId("bin_task_input").className = "input_element_correct";
+           
+            finishTask()
+        } else {
+            GetId("bin_task_input").className = "input_element_incorrect";
+        }
+    }
+
+}
 
 function loadBinaryTask_1() {
     let scale_from : number = 0;
@@ -307,12 +407,33 @@ function addHintedRow(hint:string, value: string) {
 
     GetId("task_panel").insertAdjacentHTML("beforeend",element);
 }
+
+function addCheckboxRow(hint:string, value: string) {
+    var element = `<div class="row">
+                        <div class="hex_numbers">
+                            <input class="menu_checkbox" type="checkbox" name="scales" checked>
+                            <div class="task_string">${value} </div>                        
+                        </div>
+                    </div>`;
+
+    GetId("task_panel").insertAdjacentHTML("beforeend",element);
+}
 function addHintedRowWithInputAndButton(hint:string, button_id: string, input_id:string) {
     var element = `<div class="row">
                         <div class="hex_numbers">
                             <p class="hint">${hint}</p>
                             <input class="input_element" id="${input_id}" type="text" placeholder="0">
                             <button class="menu_button" id="${button_id}" type="button">Проверить</button>
+                        </div>
+                    </div>`;
+
+    GetId("task_panel").insertAdjacentHTML("beforeend",element);
+}
+
+function addRowWithButton(button_id: string, button_text:string) {
+    var element = `<div class="row">
+                        <div class="hex_numbers">
+                            <button class="menu_button" id="${button_id}" type="button">${button_text}</button>
                         </div>
                     </div>`;
 

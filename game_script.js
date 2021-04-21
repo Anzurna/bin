@@ -91,7 +91,42 @@ function addMenuListeners() {
     var binary_excercises_button = GetId("binary_tasks_start");
     binary_excercises_button.onclick = function () {
         fade(calc_panel, removeElement("calc_panel"));
-        startSession("binary");
+        // startSession("binary");
+        var task_panel = document.createElement("div");
+        task_panel.id = "task_panel";
+        GetId("main").append(task_panel);
+        fadeIn(task_panel);
+        loadBinaryMenu();
+    };
+}
+const blocked_tasks = new Set();
+function loadBinaryMenu() {
+    let number_of_tasks = 4;
+    createTextRow(`Выберите типы задач.`);
+    addCheckboxRow("12", "Перевод из одной системы счисления в другую");
+    addCheckboxRow("12", "Недесятичная арифметика");
+    addCheckboxRow("12", "Задачи с IP адресами");
+    addCheckboxRow("12", "Логический сдвиг");
+    let elements = document.getElementsByClassName("menu_checkbox");
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].value = i;
+        elements[i].addEventListener('change', function () {
+            if (blocked_tasks.has(this.value)) {
+                blocked_tasks.delete(this.value);
+            }
+            else {
+                blocked_tasks.add(this.value);
+            }
+        });
+    }
+    addRowWithButton("start_binary_session", "Начать");
+    GetId("start_binary_session").onclick = function () {
+        if (blocked_tasks.size < number_of_tasks) {
+            var task_panel = GetId("task_panel");
+            setTimeout(() => fade1(task_panel), 500);
+            setTimeout(() => removeElement("task_panel"), 1000);
+            setTimeout(() => startSession("binary"), 1000);
+        }
     };
 }
 function startSession(_typeOfSession) {
@@ -108,26 +143,37 @@ function loadNextTask() {
         loadTask1();
     }
     if (typeOfSession == "binary") {
-        var task_selector = Math.floor(Math.random() * 3);
-        console.log(task_selector);
-        switch (task_selector) {
-            case 0:
-                loadBinaryTask_1();
+        while (true) {
+            let task_selector = (Math.floor(Math.random() * 4)).toString();
+            if (blocked_tasks.has(task_selector)) {
+                continue;
+            }
+            else {
+                console.log(task_selector);
+                switch (task_selector) {
+                    case "0":
+                        loadBinaryTask_1();
+                        break;
+                    case "1":
+                        loadBinaryTask_2();
+                        break;
+                    case "2":
+                        loadNetTask_1();
+                        break;
+                    case "3":
+                        loadShiftTask_1();
+                        break;
+                }
                 break;
-            case 1:
-                loadBinaryTask_2();
-                break;
-            case 2:
-                loadNetTask_1();
-                break;
+            }
         }
     }
 }
 //var task_number : number = 1;
 function finishTask() {
     var task_panel = GetId("task_panel");
-    setTimeout(function () { return fade1(task_panel); }, 500);
-    setTimeout(function () { return removeElement("task_panel"); }, 1000);
+    setTimeout(() => fade1(task_panel), 500);
+    setTimeout(() => removeElement("task_panel"), 1000);
     setTimeout(loadNextTask, 1000);
     // loadNextTask();
 }
@@ -135,18 +181,58 @@ function removeElement(el) {
     console.log("Function!");
     GetId(el).remove();
 }
+function getRandomNumber(range) {
+    return (Math.floor(Math.random() * range));
+}
+function loadShiftTask_1() {
+    let direction_select = getRandomNumber(2);
+    let shift_amount = getRandomNumber(3) + 1;
+    let direction_str = "";
+    let byte_str = "";
+    let result;
+    let number = getRandomNumber(2048);
+    let number_transformed = transform(number, 2);
+    if (direction_select == 0) {
+        direction_str = "влево";
+        result = number << shift_amount;
+    }
+    else {
+        direction_str = "вправо";
+        result = number >>> shift_amount;
+    }
+    if (shift_amount > 1) {
+        byte_str = "бита";
+    }
+    else {
+        byte_str = "бит";
+    }
+    createTextRow(`Выполните логический сдвиг беззнакового 
+        двухбайтового целого ${direction_str} на ${shift_amount} ${byte_str}.`);
+    addHintedRow("2", number_transformed);
+    console.log(transform(result, 16));
+    addHintedRowWithInputAndButton("16", "bin_task_button", "bin_task_input");
+    GetId("bin_task_button").onclick = function () {
+        if (GetId("bin_task_input").value == transform(result, 16)) {
+            GetId("bin_task_input").className = "input_element_correct";
+            finishTask();
+        }
+        else {
+            GetId("bin_task_input").className = "input_element_incorrect";
+        }
+    };
+}
 function loadBinaryTask_1() {
-    var scale_from = 0;
-    var scale_to = 0;
+    let scale_from = 0;
+    let scale_to = 0;
     while (scale_from == scale_to) {
         scale_from = Math.floor(Math.random() * 4);
         scale_to = Math.floor(Math.random() * 4);
     }
     scale_from = scale_of_notation_types[scale_from];
     scale_to = scale_of_notation_types[scale_to];
-    var scale_from_name = bin_information_from[scale_from];
-    var scale_to_name = bin_information_to[scale_to];
-    createTextRow("\u041F\u0435\u0440\u0435\u0432\u0435\u0434\u0438\u0442\u0435 \u0447\u0438\u0441\u043B\u043E \u0438\u0437 " + scale_from_name + " \u0441\u0438\u0441\u0442\u0435\u043C\u044B \u0441\u0447\u0438\u0441\u043B\u0435\u043D\u0438\u044F \u0432 " + scale_to_name + ".");
+    let scale_from_name = bin_information_from[scale_from];
+    let scale_to_name = bin_information_to[scale_to];
+    createTextRow(`Переведите число из ${scale_from_name} системы счисления в ${scale_to_name}.`);
     var conditions = genTranslateTaskConditions(scale_from, scale_to);
     addHintedRow(scale_from.toString(), conditions["question"]);
     console.log(conditions["answer"]);
@@ -162,28 +248,28 @@ function loadBinaryTask_1() {
     };
 }
 function loadBinaryTask_2() {
-    var task_2_type = Math.floor(Math.random() * 2);
-    var operand_1_scale = 10;
-    var operand_2_scale = 10;
+    let task_2_type = Math.floor(Math.random() * 2);
+    let operand_1_scale = 10;
+    let operand_2_scale = 10;
     while (operand_1_scale == 10 && operand_1_scale == 10) {
         operand_1_scale = scale_of_notation_types[Math.floor(Math.random() * 4)];
         operand_2_scale = scale_of_notation_types[Math.floor(Math.random() * 4)];
     }
-    var result_scale = scale_of_notation_types[Math.floor(Math.random() * 4)];
-    var operand_1 = Math.floor(Math.random() * 4096);
-    var operand_2 = Math.floor(Math.random() * 4096);
-    var operand_1_str = transform(operand_1, operand_1_scale);
-    var operand_2_str = transform(operand_2, operand_2_scale);
-    var result;
+    let result_scale = scale_of_notation_types[Math.floor(Math.random() * 4)];
+    let operand_1 = Math.floor(Math.random() * 4096);
+    let operand_2 = Math.floor(Math.random() * 4096);
+    let operand_1_str = transform(operand_1, operand_1_scale);
+    let operand_2_str = transform(operand_2, operand_2_scale);
+    let result;
     if (task_2_type == 0) {
-        createTextRow("\u0421\u043B\u043E\u0436\u0438\u0442\u0435 \u0447\u0438\u0441\u043B\u0430.");
+        createTextRow(`Сложите числа.`);
         result = operand_1 + operand_2;
     }
     else if (task_2_type == 1) {
-        createTextRow("\u0412\u044B\u0447\u0442\u0438\u0442\u0435 \u0432\u0442\u043E\u0440\u043E\u0435 \u0447\u0438\u0441\u043B\u043E \u0438\u0437 \u043F\u0435\u0440\u0432\u043E\u0433\u043E. \u0420\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442 \u043C\u043E\u0436\u0435\u0442 \u0431\u044B\u0442\u044C \u043E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u043C.");
+        createTextRow(`Вычтите второе число из первого. Результат может быть отрицательным.`);
         result = operand_1 - operand_2;
     }
-    var result_str = transform(result, result_scale);
+    let result_str = transform(result, result_scale);
     addHintedRow(operand_1_scale.toString(), operand_1_str);
     addHintedRow(operand_2_scale.toString(), operand_2_str);
     addHintedRowWithInputAndButton(result_scale.toString(), "bin_task_button", "bin_task_input");
@@ -199,33 +285,33 @@ function loadBinaryTask_2() {
     };
 }
 function loadNetTask_1() {
-    var net_task_1_type = Math.floor(Math.random() * 2);
-    var net_ip = [0, 0, 0, 0];
-    var host_ip = [0, 0, 0, 0];
-    var netmask = [0, 0, 0, 0];
-    for (var i = 0; i < 4; i++) {
+    let net_task_1_type = Math.floor(Math.random() * 2);
+    let net_ip = [0, 0, 0, 0];
+    let host_ip = [0, 0, 0, 0];
+    let netmask = [0, 0, 0, 0];
+    for (let i = 0; i < 4; i++) {
         net_ip[i] = Math.floor(Math.random() * 256);
         netmask[i] = Math.floor(Math.random() * 256);
         host_ip[i] = net_ip[i] & netmask[i];
     }
-    var convergeIP = function (array) {
-        var ip = "";
-        for (var byte = 0; byte < 4; byte++) {
+    let convergeIP = function (array) {
+        let ip = "";
+        for (let byte = 0; byte < 4; byte++) {
             ip += array[byte].toString() + ".";
         }
         return ip.substring(0, ip.length - 1);
     };
-    var host_ip_str = convergeIP(host_ip);
-    var answer;
+    let host_ip_str = convergeIP(host_ip);
+    let answer;
     if (net_task_1_type == 0) {
-        createTextRow("\u0412\u044B\u0447\u0438\u0441\u043B\u0438\u0442\u0435 \u0430\u0434\u0440\u0435\u0441 \u0445\u043E\u0441\u0442\u0430.");
+        createTextRow(`Вычислите адрес хоста.`);
         addHintedRow("IP сети&nbsp", convergeIP(net_ip));
         addHintedRow("Маска&nbsp&nbsp&nbsp", convergeIP(netmask));
         addHintedRowWithInputAndButton("IP хоста", "bin_task_button", "bin_task_input");
         answer = host_ip_str;
     }
     else if (net_task_1_type == 1) {
-        createTextRow("\u0412\u044B\u0447\u0438\u0441\u043B\u0438\u0442\u0435 \u0430\u0434\u0440\u0435\u0441 c\u0435\u0442\u0438.");
+        createTextRow(`Вычислите адрес cети.`);
         addHintedRow("IP хоста", host_ip_str);
         addHintedRow("Маска&nbsp&nbsp&nbsp", convergeIP(netmask));
         addHintedRowWithInputAndButton("IP сети&nbsp", "bin_task_button", "bin_task_input");
@@ -243,15 +329,43 @@ function loadNetTask_1() {
     };
 }
 function addHintedRow(hint, value) {
-    var element = "<div class=\"row\">\n                        <div class=\"hex_numbers\">\n                            <p class=\"hint\">" + hint + "</p>\n                            <div class=\"hex_label\">" + value + " </div>\n                        </div>\n                    </div>";
+    var element = `<div class="row">
+                        <div class="hex_numbers">
+                            <p class="hint">${hint}</p>
+                            <div class="hex_label">${value} </div>
+                        </div>
+                    </div>`;
+    GetId("task_panel").insertAdjacentHTML("beforeend", element);
+}
+function addCheckboxRow(hint, value) {
+    var element = `<div class="row">
+                        <div class="hex_numbers">
+                            <input class="menu_checkbox" type="checkbox" name="scales" checked>
+                            <div class="task_string">${value} </div>                        
+                        </div>
+                    </div>`;
     GetId("task_panel").insertAdjacentHTML("beforeend", element);
 }
 function addHintedRowWithInputAndButton(hint, button_id, input_id) {
-    var element = "<div class=\"row\">\n                        <div class=\"hex_numbers\">\n                            <p class=\"hint\">" + hint + "</p>\n                            <input class=\"input_element\" id=\"" + input_id + "\" type=\"text\" placeholder=\"0\">\n                            <button class=\"menu_button\" id=\"" + button_id + "\" type=\"button\">\u041F\u0440\u043E\u0432\u0435\u0440\u0438\u0442\u044C</button>\n                        </div>\n                    </div>";
+    var element = `<div class="row">
+                        <div class="hex_numbers">
+                            <p class="hint">${hint}</p>
+                            <input class="input_element" id="${input_id}" type="text" placeholder="0">
+                            <button class="menu_button" id="${button_id}" type="button">Проверить</button>
+                        </div>
+                    </div>`;
+    GetId("task_panel").insertAdjacentHTML("beforeend", element);
+}
+function addRowWithButton(button_id, button_text) {
+    var element = `<div class="row">
+                        <div class="hex_numbers">
+                            <button class="menu_button" id="${button_id}" type="button">${button_text}</button>
+                        </div>
+                    </div>`;
     GetId("task_panel").insertAdjacentHTML("beforeend", element);
 }
 function genTranslateTaskConditions(scale_from, scale_to) {
-    var random = 0;
+    let random = 0;
     while (random < 50) {
         random = Math.floor(Math.random() * 4096);
     }
@@ -268,17 +382,17 @@ function transform(num, scale_target) {
     }
 }
 function loadTask1() {
-    var cs = Math.floor(Math.random() * 65535);
-    var ss = Math.floor(Math.random() * 65535);
-    var ip = Math.floor(Math.random() * 65535);
-    var sp = Math.floor(Math.random() * 65535);
+    let cs = Math.floor(Math.random() * 65535);
+    let ss = Math.floor(Math.random() * 65535);
+    let ip = Math.floor(Math.random() * 65535);
+    let sp = Math.floor(Math.random() * 65535);
     task_1_fiz_address = (cs * 16 + ip).toString(16).toUpperCase();
     task_1_stack_address = (ss * 16 + sp).toString(16).toUpperCase();
     createFirstBitRow("CS", cs);
     createBitRow("SS", ss);
     createBitRow("SP", sp);
     createBitRow("IP", ip);
-    createTextRow("\u0412\u044B\u0447\u0438\u0441\u043B\u0438\u0442\u0435 \u0444\u0438\u0437\u0438\u0447\u0435\u0441\u043A\u0438\u0439 \u0430\u0434\u0440\u0435\u0441 \u0441\u043B\u0435\u0434\u0443\u044E\u0449\u0435\u0439 \u0438\u0441\u043F\u043E\u043B\u043D\u044F\u0435\u043C\u043E\u0439 \u043A\u043E\u043C\u0430\u043D\u0434\u044B.");
+    createTextRow(`Вычислите физический адрес следующей исполняемой команды.`);
     var row = document.createElement("div");
     CreateRow(row);
     var input_element = document.createElement("input");
@@ -288,7 +402,7 @@ function loadTask1() {
     input_element.id = "first_answ";
     input_element.placeholder = "FFFFF";
     input_element.addEventListener('input', checkResult);
-    createTextRow("\u0412\u044B\u0447\u0438\u0441\u043B\u0438\u0442\u0435 \u0430\u0434\u0440\u0435\u0441 \u0432\u0435\u0440\u0448\u0438\u043D\u044B \u0441\u0442\u0435\u043A\u0430.");
+    createTextRow(`Вычислите адрес вершины стека.`);
     var row = document.createElement("div");
     CreateRow(row);
     var input_element = document.createElement("input");
@@ -327,9 +441,9 @@ function checkResult(e) {
     }
 }
 function createTextRow(text) {
-    var row = document.createElement("div");
+    let row = document.createElement("div");
     CreateRow(row);
-    var task_string = document.createElement("div");
+    let task_string = document.createElement("div");
     task_string.className = "task_string";
     row.append(task_string);
     task_string.innerHTML = text;
@@ -337,7 +451,7 @@ function createTextRow(text) {
 function CalcHex(dec_number, id_base, dig_capasity, amount) {
     var hex_string = dec_number.toString(dig_capasity);
     hex_string = hex_string.split("").reverse().join("");
-    for (var i = 0; i < amount; i++) {
+    for (let i = 0; i < amount; i++) {
         if (hex_string.length > i) {
             GetId(id_base + "_" + (i)).innerHTML = hex_string.charAt(i).toUpperCase();
         }
@@ -351,18 +465,18 @@ function CalcHex(dec_number, id_base, dig_capasity, amount) {
 //     CreateBitRow(); 
 // }
 function createBitRow(suffix, random_number) {
-    var row = document.createElement("div");
+    let row = document.createElement("div");
     CreateRow(row);
-    var bit_row = document.createElement("div");
+    let bit_row = document.createElement("div");
     createBitRowDiv(bit_row);
     row.append(bit_row);
     createBits(bit_row, suffix, random_number);
 }
 function createFirstBitRow(suffix, random_number) {
-    var row = document.createElement("div");
+    let row = document.createElement("div");
     CreateRow(row);
     row.id = "first_row";
-    var bit_row = document.createElement("div");
+    let bit_row = document.createElement("div");
     createBitRowDiv(bit_row);
     row.append(bit_row);
     createBits(bit_row, suffix, random_number);
@@ -375,16 +489,16 @@ function createBitRowDiv(bit_row) {
     bit_row.className = "hex_numbers";
 }
 function createBits(bit_row, suffix, random_number) {
-    var label = document.createElement("p");
+    let label = document.createElement("p");
     label.className = "hint";
     label.innerHTML = suffix;
     bit_row.append(label);
-    var bit_string = random_number.toString(2);
+    let bit_string = random_number.toString(2);
     //console.log(bit_string);
-    var reversed_string = bit_string.split("").reverse().join("");
+    let reversed_string = bit_string.split("").reverse().join("");
     console.log(bit_string);
-    for (var bit_number = 15; bit_number >= 0; bit_number--) {
-        var bit = document.createElement("button");
+    for (let bit_number = 15; bit_number >= 0; bit_number--) {
+        let bit = document.createElement("button");
         bit.className = "bit_button_2";
         bit.type = "button";
         bit.dataset.value = bit_number + suffix;
@@ -396,7 +510,7 @@ function createBits(bit_row, suffix, random_number) {
         }
         bit_row.append(bit);
         if ((bit_number) % 4 == 0 && bit_number != 0) {
-            var dot = document.createElement("p");
+            let dot = document.createElement("p");
             dot.className = "bit_button_2";
             dot.innerHTML = ".";
             bit_row.append(dot);

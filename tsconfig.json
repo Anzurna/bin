@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
       "target": "es2015",
-      "lib": ["dom"]
+      "lib": ["dom", "es6"]
     },
     "include": ["*"]
   }
