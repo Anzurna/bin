@@ -1,4 +1,4 @@
-var scale_of_notation_types = [2, 8, 16, 10];
+﻿var scale_of_notation_types = [2, 8, 16, 10];
 var bin_information_from = {
     2: "двоичной",
     8: "восьмеричной",
